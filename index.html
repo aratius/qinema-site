@@ -56,7 +56,7 @@ nav.solid{background:rgba(8,8,10,.72);backdrop-filter:saturate(1.6) blur(18px);-
 @media(max-width:760px){.links a.hide-m{display:none}.nav-in{gap:14px}.links{gap:16px}}
 
 /* Hero */
-.hero{position:relative;min-height:100vh;display:flex;align-items:center;padding:120px 0 80px;overflow:hidden}
+.hero{position:relative;min-height:100vh;display:flex;align-items:center;padding:120px 0 120px;overflow:hidden}
 .beam{position:absolute;top:-10%;left:50%;width:1400px;height:1200px;transform:translateX(-50%);
   background:conic-gradient(from 180deg at 50% 0%,transparent 160deg,rgba(255,210,138,.0) 165deg,rgba(255,210,138,.17) 180deg,rgba(255,210,138,0) 195deg,transparent 200deg);
   filter:blur(18px);animation:flicker 5s ease-in-out infinite;pointer-events:none}
@@ -78,7 +78,8 @@ nav.solid{background:rgba(8,8,10,.72);backdrop-filter:saturate(1.6) blur(18px);-
 .bgvid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 2.4s ease;filter:saturate(1.05) contrast(1.05) brightness(.7);z-index:0}
 .bgvid.ready{opacity:.75}
 .vig{position:absolute;inset:0;z-index:1;pointer-events:none;background:radial-gradient(ellipse at 50% 40%,transparent 20%,rgba(8,8,10,.55) 65%,var(--bg) 100%),linear-gradient(180deg,rgba(8,8,10,.55),transparent 28%,transparent 62%,var(--bg))}
-.hero .beam,.hero .flare,.hero .dust{z-index:1}
+.cine{position:absolute;inset:0;width:100%;height:100%;z-index:0}
+.bgvid{z-index:0}
 .flare{position:absolute;left:0;right:0;top:46%;height:2px;background:linear-gradient(90deg,transparent,rgba(255,200,130,.0) 20%,rgba(255,210,150,.75) 50%,rgba(255,200,130,0) 80%,transparent);filter:blur(1px);box-shadow:0 0 40px 6px rgba(255,170,90,.25);opacity:.0;animation:flare 7s ease-in-out infinite;pointer-events:none}
 @keyframes flare{0%,100%{opacity:0;transform:scaleX(.3)}50%{opacity:.8;transform:scaleX(1)}}
 .lbx{position:absolute;left:0;right:0;height:0;background:#000;z-index:3;animation:lbx 2.2s .2s cubic-bezier(.7,0,.2,1) forwards;pointer-events:none}
@@ -158,6 +159,11 @@ nav.solid{background:rgba(8,8,10,.72);backdrop-filter:saturate(1.6) blur(18px);-
 .card h3{font-size:19px;margin-bottom:8px;letter-spacing:-.01em}
 .card p{color:var(--dim);font-size:15px}
 
+/* Real screenshots */
+.shots{display:grid;gap:28px;margin-top:48px}
+.shots figure{border-radius:16px;overflow:hidden;border:1px solid var(--line);background:#111;box-shadow:0 40px 120px rgba(0,0,0,.55)}
+.shots img{width:100%;height:auto}
+.shots figcaption{padding:12px 18px;color:var(--dim);font-size:13px}
 /* Steps */
 .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-top:56px;counter-reset:s;position:relative}
 @media(max-width:900px){.steps{grid-template-columns:1fr 1fr}}@media(max-width:560px){.steps{grid-template-columns:1fr}}
@@ -232,10 +238,8 @@ footer{padding:46px 0 60px;border-top:1px solid var(--line);color:var(--mute);fo
   <video class="bgvid" id="bgvid" autoplay muted loop playsinline preload="auto" poster="assets/hero-poster.jpg" aria-hidden="true">
     <source src="assets/hero.mp4" type="video/mp4">
   </video>
+  <canvas class="cine" id="cine" aria-hidden="true"></canvas>
   <div class="vig"></div>
-  <div class="beam"></div>
-  <div class="flare"></div>
-  <div class="dust" id="dust"></div>
   <div class="lbx t"></div><div class="lbx b"></div>
   <div class="wrap hero-in">
     <img class="app-ico" src="assets/icon-512.png" alt="Qinema app icon">
@@ -249,26 +253,6 @@ footer{padding:46px 0 60px;border-top:1px solid var(--line);color:var(--mute);fo
     </div>
     <p class="meta" data-i="hero_meta"></p>
 
-    <div class="stage" id="stage">
-      <div class="mock" id="mock">
-        <div class="bar"><i></i><i></i><i></i><span>Opening Night — Qinema</span></div>
-        <div class="body">
-          <div class="list">
-            <div class="sec-h">Section 1 · Shorts <small>Play Section</small></div>
-            <div class="row now"><div class="th"></div><div>Morning Light</div><em>1.5s</em><em>2.0s</em><em>5s</em></div>
-            <div class="row"><div class="th"></div><div>The Long Corridor</div><em>1.0s</em><em>3.0s</em><em>5s</em></div>
-            <div class="row"><div class="th"></div><div>Paper Moon</div><em>1.5s</em><em>2.5s</em><em>8s</em></div>
-            <div class="sec-h" style="margin-top:18px">Section 2 · Feature <small>Play Section</small></div>
-            <div class="row"><div class="th"></div><div>MOSQUITO</div><em>2.0s</em><em>4.0s</em><em>—</em></div>
-          </div>
-          <div class="screen-col">
-            <div class="screen"><div class="film"></div><span class="lbl">OUTPUT · 1920×1080</span></div>
-            <div class="meter"><div><i></i></div><div><i></i></div></div>
-            <div class="btnrow"><span class="go">Play</span><span>Next</span><span>Back to Standby ⌘B</span></div>
-          </div>
-        </div>
-      </div>
-    </div>
   </div>
 </header>
 
@@ -318,6 +302,14 @@ footer{padding:46px 0 60px;border-top:1px solid var(--line);color:var(--mute);fo
       <div class="theatre"><div class="b"></div><div class="a"></div><span class="cap">Qinema output</span></div>
       <div class="timeline"><div class="seg s1"></div><div class="seg s2"></div><div class="head"></div></div>
     </div>
+  </div>
+</section>
+
+<section id="interface" hidden>
+  <div class="wrap">
+    <div class="eyebrow rv" data-i="ui_eye"></div>
+    <h2 class="rv d1" data-i="ui_h"></h2>
+    <div class="shots" id="shots"></div>
   </div>
 </section>
 
@@ -454,6 +446,7 @@ l_eye:["Terms · Privacy · License","利用規約 · プライバシー · ラ�
 t_h:["Terms of Use","利用規約","使用条款"],t1:["Qinema is provided free of charge for personal, educational and public screening use.","Qinemaは、個人・教育・公開上映の用途で無料でご利用いただけます。","Qinema 可免费用于个人、教育及公开放映。"],t2:["The software is provided “as is”, without warranty of any kind. Always rehearse before a public event and keep a backup plan.","本ソフトウェアは現状のまま提供され、いかなる保証もありません。本番前に必ずリハーサルを行い、バックアップ手段を用意してください。","软件按“现状”提供,不附带任何担保。公开活动前请务必彩排并准备备用方案。"],t3:["The author is not liable for any loss or damage arising from use of the software, including interruptions during a screening.","本ソフトウェアの利用(上映中の中断を含む)に起因する損害について、作者は責任を負いません。","因使用本软件(包括放映中断)造成的任何损失,作者概不负责。"],t4:["You are responsible for holding the rights to the films you screen.","上映する作品の権利処理は、利用者ご自身の責任で行ってください。","您需自行负责所放映电影的版权。"],t5:["Do not redistribute modified copies under the Qinema name.","改変したものを「Qinema」の名称で再配布しないでください。","请勿以 Qinema 名义再分发修改版本。"],
 p_h:["Privacy","プライバシー","隐私"],p1:["Qinema does not collect, transmit or store any personal data on a server. It has no analytics and no accounts.","Qinemaは個人データの収集・送信・サーバー保存を一切行いません。解析ツールもアカウントもありません。","Qinema 不收集、不传输、不在服务器上存储任何个人数据,没有统计分析,也没有账号。"],p2:["Settings and logs stay on your Mac (logs: ~/Library/Logs/Qinema). This website sets no tracking cookies.","設定とログはお使いのMac内にのみ保存されます(ログ: ~/Library/Logs/Qinema)。このサイトはトラッキングCookieを使用しません。","设置与日志仅保存在你的 Mac 上(日志:~/Library/Logs/Qinema)。本网站不使用跟踪 Cookie。"],
 li_h:["License","ライセンス","许可"],li1:["Free-to-use proprietary software. You may copy and share the unmodified installer (.dmg / .zip) free of charge.","無償で使える独自ライセンスのソフトウェアです。未改変のインストーラ(.dmg / .zip)を無償でコピー・共有できます。","免费使用的专有软件。可免费复制、分享未经修改的安装包(.dmg / .zip)。"],li2:["“Apple”, “macOS” and “Mac” are trademarks of Apple Inc. Qinema is not affiliated with or endorsed by Apple.","「Apple」「macOS」「Mac」はApple Inc.の商標です。QinemaはAppleとは無関係です。","“Apple”“macOS”“Mac”是 Apple Inc. 的商标。Qinema 与 Apple 无关联,亦未获其认可。"],
+ui_eye:["Interface","画面","界面"],ui_h:["The real app.<br>Nothing staged.","実際のアプリ画面。<br>演出なし。","真实的应用界面。<br>毫无摆拍。"],ui_c1:["Main window","メイン画面","主窗口"],ui_c2:["Level Mixer","レベルミキサー","音量混合器"],ui_c3:["Transport controls","再生コントロール","播放控制"],
 foot:["Made for people who love the dark room.","暗闇を愛する人のために。","献给热爱暗室的人。"]
 };
 const LANGS=['en','ja','zh'];
@@ -483,22 +476,72 @@ addEventListener('scroll',()=>navEl.classList.toggle('solid',scrollY>30),{passiv
 const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.14,rootMargin:'0px 0px -6% 0px'});
 document.querySelectorAll('.rv').forEach(el=>io.observe(el));
 
-/* dust particles */
-const dust=document.getElementById('dust');
-for(let k=0;k<26;k++){const i=document.createElement('i');i.style.left=(30+Math.random()*40)+'%';i.style.top=(20+Math.random()*70)+'%';i.style.animationDuration=(7+Math.random()*9)+'s';i.style.animationDelay=(-Math.random()*12)+'s';i.style.transform='scale('+(.5+Math.random()*1.2)+')';dust.appendChild(i)}
+/* cinematic hero: projector beam, dust and audience silhouettes (drawn live, no stock footage) */
+(function(){
+  const c=document.getElementById('cine'); if(!c) return; const ctx=c.getContext('2d');
+  let W=0,H=0; const dpr=Math.min(window.devicePixelRatio||1,2);
+  function size(){const r=c.getBoundingClientRect();W=r.width;H=r.height;c.width=W*dpr;c.height=H*dpr;ctx.setTransform(dpr,0,0,dpr,0,0)}
+  size(); addEventListener('resize',size);
+  const rnd=(function(seed){return function(){seed=(seed*1664525+1013904223)%4294967296;return seed/4294967296}})(7);
+  const P=[]; for(let i=0;i<320;i++) P.push({x:rnd(),y:rnd(),z:rnd(),ph:rnd()*6.28,v:.4+rnd()});
+  const rows=[]; for(let r=0;r<3;r++){const row=[];let x=-.05;while(x<1.08){row.push({x:x+(rnd()-.5)*.012,h:.9+rnd()*.35,w:.9+rnd()*.3});x+=.034+rnd()*.012}rows.push(row)}
+  const still=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function draw(t){
+    ctx.globalCompositeOperation='source-over';
+    const bg=ctx.createLinearGradient(0,0,0,H); bg.addColorStop(0,'#09090c'); bg.addColorStop(.7,'#0c0a0b'); bg.addColorStop(1,'#060607');
+    ctx.fillStyle=bg; ctx.fillRect(0,0,W,H);
+    const ox=W*.5, oy=-H*.08, sy=H*.8, sw=Math.min(W*.62,H*1.15);
+    const flick=.9+.06*Math.sin(t*.011)+.04*Math.sin(t*.037+1.3);
+    const sway=Math.sin(t*.00012)*W*.012;
+    ctx.globalCompositeOperation='lighter';
+    // beam
+    const g=ctx.createLinearGradient(0,oy,0,sy);
+    g.addColorStop(0,'rgba(255,228,176,0)'); g.addColorStop(.15,'rgba(255,224,170,'+(.16*flick)+')'); g.addColorStop(.75,'rgba(255,205,140,'+(.08*flick)+')'); g.addColorStop(1,'rgba(255,205,140,0)');
+    ctx.save(); ctx.filter='blur(26px)'; ctx.fillStyle=g; ctx.beginPath(); ctx.moveTo(ox,oy); ctx.lineTo(ox-sw/2+sway,sy); ctx.lineTo(ox+sw/2+sway,sy); ctx.closePath(); ctx.fill(); ctx.restore();
+    // soft beam edges
+    ctx.save(); ctx.filter='blur(60px)'; ctx.fillStyle='rgba(255,215,150,'+(.06*flick)+')';
+    ctx.beginPath(); ctx.moveTo(ox,oy); ctx.lineTo(ox-sw*.62+sway,sy); ctx.lineTo(ox+sw*.62+sway,sy); ctx.closePath(); ctx.fill(); ctx.restore();
+    // screen glow
+    const rg=ctx.createRadialGradient(ox+sway,sy,0,ox+sway,sy,sw*.55);
+    rg.addColorStop(0,'rgba(255,214,150,'+(.28*flick)+')'); rg.addColorStop(.5,'rgba(231,150,80,'+(.1*flick)+')'); rg.addColorStop(1,'rgba(0,0,0,0)');
+    ctx.fillStyle=rg; ctx.fillRect(0,sy-sw*.5,W,sw);
+    // dust
+    for(const p of P){
+      const yy=((p.y - t*.000018*(.4+p.z)*p.v)%1+1)%1;
+      const x=p.x*W+Math.sin(t*.0003*p.v+p.ph)*(14+30*p.z)+sway*p.z;
+      const y=yy*H*.9;
+      const hw=(sw/2)*((y-oy)/(sy-oy));
+      const inb=Math.abs(x-(ox+sway))<hw && y>0 && y<sy;
+      const a=(inb?.18+.62*p.z:.03+.05*p.z)*(.7+.3*Math.sin(t*.002*p.v+p.ph));
+      ctx.fillStyle='rgba(255,226,176,'+a+')'; ctx.beginPath(); ctx.arc(x,y,.5+2.1*p.z*(inb?1:.6),0,6.283); ctx.fill();
+    }
+    // audience silhouettes
+    ctx.globalCompositeOperation='source-over';
+    for(let r=0;r<rows.length;r++){
+      const base=H*(.93+r*.055), sz=H*(.062+r*.02);
+      ctx.fillStyle=r===0?'#0b0a0b':(r===1?'#060506':'#020202');
+      for(const q of rows[r]){
+        const x=q.x*W, hs=sz*q.h;
+        ctx.beginPath(); ctx.ellipse(x,base-hs*1.1,hs*.46*q.w,hs*.56,0,0,6.283); ctx.fill();
+        ctx.beginPath(); ctx.ellipse(x,base+hs*.35,hs*1.05*q.w,hs*.95,0,Math.PI,6.283); ctx.fill();
+      }
+      ctx.fillRect(0,base+hs0(sz),W,H);
+    }
+    function hs0(sz){return sz*.3}
+  }
+  if(still){draw(4000)} else {const loop=t=>{draw(t);requestAnimationFrame(loop)};requestAnimationFrame(loop)}
+})();
 
-/* background video: show only if it can really play */
-const v=document.getElementById('bgvid');
-v.addEventListener('canplay',()=>v.classList.add('ready'));
-v.addEventListener('error',()=>v.remove(),true);
-v.querySelector('source').addEventListener('error',()=>v.remove());
-v.play&&v.play().catch(()=>{});
-/* mock tilt follows scroll + mouse */
-const mock=document.getElementById('mock');
-function tilt(){const r=document.getElementById('stage').getBoundingClientRect();const k=Math.max(0,Math.min(1,r.top/innerHeight));mock.style.transform=`rotateX(${(1-(1-k))*9}deg) translateY(${(k)*-0}px)`}
-addEventListener('scroll',tilt,{passive:true});
-addEventListener('mousemove',e=>{const x=(e.clientX/innerWidth-.5)*3;mock.style.transform=`rotateX(8deg) rotateY(${x}deg)`},{passive:true});
-
+/* real screenshots: shown only if the files exist (assets/shot-*.png) */
+(function(){
+  const list=[['assets/shot-main.png','ui_c1'],['assets/shot-mixer.png','ui_c2'],['assets/shot-transport.png','ui_c3']];
+  const box=document.getElementById('shots'), sec=document.getElementById('interface'); let n=0;
+  list.forEach(([src,cap])=>{const im=new Image(); im.onload=()=>{
+    const f=document.createElement('figure'); f.className='rv'; f.appendChild(im);
+    const c=document.createElement('figcaption'); c.dataset.i=cap; f.appendChild(c); box.appendChild(f);
+    sec.hidden=false; applyLang(document.documentElement.lang==='zh-CN'?'zh':document.documentElement.lang); io.observe(f); n++;};
+    im.alt='Qinema screenshot'; im.src=src;});
+})();
 /* spotlight on cards */
 document.querySelectorAll('.card').forEach(c=>c.addEventListener('pointermove',e=>{const r=c.getBoundingClientRect();c.style.setProperty('--mx',(e.clientX-r.left)+'px');c.style.setProperty('--my',(e.clientY-r.top)+'px')}));
 </script>
