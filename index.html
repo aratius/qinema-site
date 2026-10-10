@@ -563,7 +563,7 @@ document.querySelectorAll('.rv').forEach(el=>io.observe(el));
 
 /* real screenshots: shown only if the files exist (assets/shot-*.png) */
 (function(){
-  const list=[['assets/shot-main.png','ui_c1'],['assets/shot-mixer.png','ui_c2'],['assets/shot-transport.png','ui_c3']];
+  const list=[['assets/shot-main.png','ui_c1'],['assets/shot-mixer.png','ui_c2']];
   const box=document.getElementById('shots'), sec=document.getElementById('interface'); let n=0;
   list.forEach(([src,cap])=>{const im=new Image(); im.onload=()=>{
     const f=document.createElement('figure'); f.className='rv'; f.appendChild(im);
