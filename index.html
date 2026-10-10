@@ -554,8 +554,8 @@ document.querySelectorAll('.rv').forEach(el=>io.observe(el));
     }
     // 暗さ: スポットライトの中だけ、わずかに景色が見える (0.3 の明るさ)
     ctx.globalCompositeOperation='source-over';
-    const sp=ctx.createRadialGradient(sunX,H*.46,0,sunX,H*.46,Math.max(W*.6,H*.9));
-    sp.addColorStop(0,'rgba(7,7,9,.52)'); sp.addColorStop(.4,'rgba(7,7,9,.74)'); sp.addColorStop(1,'rgba(7,7,9,.93)');
+    const sp=ctx.createRadialGradient(sunX,H*.46,0,sunX,H*.46,Math.max(W*.52,H*.8));
+    sp.addColorStop(0,'rgba(7,7,9,.12)'); sp.addColorStop(.28,'rgba(7,7,9,.36)'); sp.addColorStop(.6,'rgba(7,7,9,.82)'); sp.addColorStop(1,'rgba(7,7,9,.97)');
     ctx.fillStyle=sp; ctx.fillRect(0,0,W,H);
   }
   if(still){draw(4000)} else {const loop=t=>{draw(t);requestAnimationFrame(loop)};requestAnimationFrame(loop)}
